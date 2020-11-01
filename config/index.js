@@ -11,19 +11,19 @@ var config = {
     multer_path: './data/'
   },
   staging: {
-    host: 'localhost',
+    host: 'postgresql-14747-0.cloudclusters.net',
     app_port: process.env.PORT || 3000,
     jwt_secret_token: 'claveinseguratokens',
-    db_port: 5432,
-    db_username: 'postgres',
-    db_password: 'postgres',
+    db_port: 14747,
+    db_username: 'sebastian',
+    db_password: '12345678',
     multer_path: './data/'
   },
   production: {
-    host: 'localhost',
+    host: 'postgresql-14747-0.cloudclusters.net',
     app_port: process.env.PORT || 3000,
     jwt_secret_token: process.env.jwt_secret_token,
-    db_port: 5432,
+    db_port: 14747,
     db_username: process.env.db_username,
     db_password: process.env.db_password,
     multer_path: './data/'

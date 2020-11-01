@@ -2,7 +2,7 @@ var config = require('./config')
 
 module.exports = {
    "type": "postgres",
-   "host": "localhost",
+   "host": config.host,
    "port": config.db_port,
    "username": config.db_username,
    "password": config.db_password,
