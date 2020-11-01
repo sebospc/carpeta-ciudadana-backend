@@ -1,7 +1,7 @@
 import express from 'express';
 import CitizenController from './controller/Cityzen.controller';
 import OrganizationController from './controller/Organization.controller';
-
+import http from 'http';
 export default class App {
     public app: express.Application;
     public port: number;
@@ -28,8 +28,11 @@ export default class App {
 
     // Boots the application
     public listen() {
-        this.app.listen(this.port, () => {
-            console.log(`Server running on port ${this.port}`);
-        });
+       
+
+        this.app.set('port', this.port);
+    
+        const server = http.createServer(this.app);
+        server.listen(this.port);
     }
 }

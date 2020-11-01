@@ -1,7 +1,6 @@
-import { Entity, Column, OneToMany, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { Media } from '../base';
+import { Entity, Column, OneToMany, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
-import { Item } from '../base/Item.entity';
+import { Item } from '../base';
 
 @Entity()
 export class Cityzen extends Item {
@@ -27,6 +26,20 @@ export class Cityzen extends Item {
     })
     @JoinColumn()
     documentContainers: DocumentContainer[];
+
+}
+
+@Entity({ schema: 'media' })
+export class Media {
+
+    @PrimaryGeneratedColumn()
+    id: string;
+
+    @CreateDateColumn({ type: "timestamp" })
+    createdAt: Date;
+
+    @CreateDateColumn({ type: "timestamp" })
+    updatedAt: Date;
 
 }
 

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 
 import { createConnection } from 'typeorm';
 import cors from 'cors';
+import * as config from '../config';
 
 
 
@@ -12,9 +13,9 @@ createConnection().then(async connection => {
     console.log("connection done");
     connection.synchronize();
 
-    const app = new App(3000);
+    const app = new App(config.app_port);
 
-    
+
     app.app.use(cors());
 
     app.app.options('*', (req, res) => {
