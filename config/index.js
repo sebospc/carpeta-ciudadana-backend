@@ -8,7 +8,8 @@ var config = {
     db_port: 5432,
     db_username: 'postgres',
     db_password: 'postgres',
-    multer_path: './data/'
+    multer_path: './data/',
+    mintic_hostname: 'https://govcarpetaapp.mybluemix.net'
   },
   staging: {
     host: 'postgresql-14747-0.cloudclusters.net',
@@ -17,7 +18,8 @@ var config = {
     db_port: 14747,
     db_username: 'sebastian',
     db_password: '12345678',
-    multer_path: './data/'
+    multer_path: './data/',
+    mintic_hostname: 'https://govcarpetaapp.mybluemix.net'
   },
   production: {
     host: 'postgresql-14747-0.cloudclusters.net',
@@ -26,7 +28,8 @@ var config = {
     db_port: 14747,
     db_username: process.env.db_username,
     db_password: process.env.db_password,
-    multer_path: './data/'
+    multer_path: './data/',
+    mintic_hostname: 'https://govcarpetaapp.mybluemix.net'
   }
 };
 

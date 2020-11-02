@@ -1,4 +1,4 @@
-export class RegisterCityzen {
+export class RegisterCitizen {
 
     identifier: string;
 
@@ -7,4 +7,6 @@ export class RegisterCityzen {
     lastName: string;
 
     password: string;
+
+    address: string;
 }

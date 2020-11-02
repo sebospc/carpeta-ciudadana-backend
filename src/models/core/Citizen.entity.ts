@@ -3,7 +3,7 @@ import { Entity, Column, OneToMany, JoinColumn, ManyToOne, OneToOne, PrimaryGene
 import { Item } from '../base';
 
 @Entity()
-export class Cityzen extends Item {
+export class Citizen extends Item {
 
     @Column()
     identifier: string;
@@ -20,7 +20,12 @@ export class Cityzen extends Item {
     @Column()
     email: string;
 
-    @OneToMany(type => DocumentContainer, documentContainer => documentContainer.cityzen, {
+    @Column({
+        nullable: true
+    })
+    address: string;
+
+    @OneToMany(type => DocumentContainer, documentContainer => documentContainer.citizen, {
         cascade: true,
         eager: false
     })
@@ -66,8 +71,8 @@ export class DocumentContainer extends Media {
     })
     mimeType: string;
 
-    @ManyToOne(type => Cityzen, textileReference => textileReference.documentContainers)
-    cityzen: Cityzen;
+    @ManyToOne(type => Citizen, textileReference => textileReference.documentContainers)
+    citizen: Citizen;
 
     @OneToOne(type => Document, {
         cascade: true,

@@ -1,37 +1,49 @@
-import { Cityzen } from "../models/core";
-import { MinticCityzen } from "../payload/MinticCityzen.response";
+import { Citizen, DocumentContainer } from "../models/core";
+import axios from 'axios';
+import * as config from "../../config";
 
+export const citizenAlreadyRegistered = async (identifier: string): Promise<boolean> => {
 
-export const getUserFromIdentifier = async (identifier: string): Promise<MinticCityzen> => {
-    //integration with mintic api
-
-    if (Math.random() > 5) {
-        const minticUser: MinticCityzen = new MinticCityzen();
-
-        minticUser.email = Array.from({ length : 10 }, () => Math.random().toString(36)[2]).join('');
-        minticUser.identifier = Array.from({ length : 10 }, () => Math.random().toString(36)[2]).join('');
-        return minticUser;
-    } 
-
-    return undefined;
+    try {
+        const response = await axios.get(`${config.mintic_hostname}/apis/validateCitizen/${identifier}`);
+        console.log(response.data)
+        return response.status == 200;
+    } catch (error) {
+        console.log(error)
+        return undefined;
+    }
 
 }
 
-export const getUserFromEmail = async (email: string): Promise<MinticCityzen> => {
-    //integration with mintic api
+export const notifyCitizenSaved = async (citizen: Citizen): Promise<boolean> => {
 
-    if (Math.random() > 5) {
-        const minticUser: MinticCityzen = new MinticCityzen();
+    const minticCitizenRequest = {
+        id: citizen.identifier,
+        name: citizen.firstName + ' ' + citizen.lastName,
+        address: citizen.address ?? Array.from({ length: 10 }, () => Math.random().toString(36)[2]).join(''),
+        email: citizen.email,
+        operatorId: 2,
+        operatorName: "Carpeta Ciudadana"
+    }
 
-        minticUser.email = Array.from({ length : 10 }, () => Math.random().toString(36)[2]).join('');
-        minticUser.identifier = Array.from({ length : 10 }, () => Math.random().toString(36)[2]).join('');
-        return minticUser;
-    } 
-
-    return undefined;
+    try {
+        const response = await axios.post(config.mintic_hostname+'/apis/registercitizen', minticCitizenRequest);
+        console.log(response.data)
+        return response.status == 200;
+    } catch (error) {
+        console.log(error)
+        return undefined;
+    }
 }
 
-export const notifyCityzenSaved = async (cityzen: Cityzen) => {
-    console.log("mintic notified");
-    //inntegration with mintic
+export const validateDocument = async(identifier: string, documentContainer: DocumentContainer): Promise<boolean> => {
+
+    try {
+        const response = await axios.get(`${config.mintic_hostname}/apis/authenticateDocument/${identifier}/${documentContainer.fileName}/${documentContainer.fileName}`);
+        console.log(response.data)
+        return response.status == 200;
+    } catch (error) {
+        console.log(error)
+        return undefined;
+    }
 }

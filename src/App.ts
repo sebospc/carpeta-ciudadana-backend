@@ -1,5 +1,5 @@
 import express from 'express';
-import CitizenController from './controller/Cityzen.controller';
+import CitizenController from './controller/Citizen.controller';
 import OrganizationController from './controller/Organization.controller';
 import http from 'http';
 export default class App {

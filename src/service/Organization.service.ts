@@ -1,12 +1,15 @@
 import { Organization } from "../models/core/Organization.entity";
 import { RegisterOrganization } from "../payload/RegisterOrganization.request";
-import * as organizationDao from '../dao/Organization.dao';
+import { Citizen, DocumentContainer } from "../models/core";
 import { getRepository } from "typeorm";
 import bcrypt from 'bcrypt';
+
 import * as authenticationService from './AutheticationService.service';
-import * as cityzenDao from '../dao/CityzenDao.dao';
+import * as citizenDao from '../dao/CitizenDao.dao';
 import * as documentService from './DocumentService.service';
-import { Cityzen, DocumentContainer } from "../models/core";
+import * as organizationDao from '../dao/Organization.dao';
+import * as minticService from './MinticService.service';
+
 
 export const registerOrganization = async (registerOrganization: RegisterOrganization): Promise<String> => {
 
@@ -41,11 +44,19 @@ export const loginOrganization = async (identifier: string, secretKey: string): 
     }
 }
 
-export const saveVerifiedDocumentToCityzen = async (fileInfo: JSON, cityzenEmail: string): Promise<[DocumentContainer | undefined, String] | undefined> => {
-    const cityzen: Cityzen = await cityzenDao.findByEmail(cityzenEmail);
-
-    if (fileInfo && cityzen) {
-        return await documentService.saveTemporalDocument(fileInfo, cityzen);
+export const saveVerifiedDocumentToCitizen = async (fileInfo: JSON, citizenEmail: string): Promise<[DocumentContainer | undefined, String] | undefined> => {
+    const citizen: Citizen = await citizenDao.findByEmail(citizenEmail);
+    if (fileInfo && citizen) {
+        const documentResult = await documentService.saveTemporalDocument(fileInfo, citizen);
+        if (documentResult[0]) {
+            if (await minticService.validateDocument(citizen.identifier, documentResult[0])) {
+                return [documentResult[0], 'Document saved and authenticated'];
+            } else {
+                return documentResult;
+            }
+        } else {
+            return documentResult;
+        }
     } else {
         return [undefined, "Incomplete information"];
     }

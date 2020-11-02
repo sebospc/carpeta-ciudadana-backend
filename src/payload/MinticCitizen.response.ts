@@ -1,4 +1,6 @@
-export class MinticCityzen {
+export class MinticCitizen {
+
     identifier: String;
+    
     email: String;
 }

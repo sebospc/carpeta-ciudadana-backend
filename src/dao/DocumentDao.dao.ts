@@ -1,10 +1,10 @@
-import { DocumentContainer, Cityzen } from "../models/core";
+import { DocumentContainer, Citizen } from "../models/core";
 import { getRepository } from "typeorm";
 
-export const findDocumentContainersByCityzen = async (cityzen: Cityzen) => {
+export const findDocumentContainersBycitizen = async (citizen: Citizen) => {
     const documentContainerRepository = getRepository(DocumentContainer);
 
     return await documentContainerRepository.find({
-        cityzen: cityzen
+        citizen: citizen
     });
 }

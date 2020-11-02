@@ -19,7 +19,7 @@ export default class OrganizationController {
         
         this.router.post('/organization/register', this.register);
         this.router.post('/organization/login', this.login);
-        this.router.post('/organization/uploadVerifiedDocumentToCityzen', this.entityAuth, upload.single('file'), this.uploadVerifiedDocumentToCityzen);
+        this.router.post('/organization/uploadVerifiedDocumentTocitizen', this.entityAuth, upload.single('file'), this.uploadVerifiedDocumentTocitizen);
     }
 
     public async login(req: express.Request, res: express.Response) {
@@ -39,17 +39,19 @@ export default class OrganizationController {
         const secretKey = await organizationService.registerOrganization(registerOrganization);
 
         if (secretKey) {
-            res.send(secretKey);
+            res.send({
+                secretKey: secretKey
+            });
         } else {
             res.status(403)
                 .send('Organization already exists');
         }
     }
 
-    public async uploadVerifiedDocumentToCityzen(req: express.Request, res: express.Response,) {
+    public async uploadVerifiedDocumentTocitizen(req: express.Request, res: express.Response,) {
         var result;
         try {
-            result = await organizationService.saveVerifiedDocumentToCityzen(req['file'], req.body.cityzenEmail)
+            result = await organizationService.saveVerifiedDocumentToCitizen(req['file'], req.body.citizenEmail)
         } finally {
             fs.unlink(config.multer_path + req['file']['filename'], (err) => {
                 if (err) {

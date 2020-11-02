@@ -1,4 +1,4 @@
-export class LoginCityzen{
+export class LoginCitizen{
 
     email: string;
 

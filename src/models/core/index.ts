@@ -1,1 +1,1 @@
-export * from './Cityzen.entity';
+export * from './Citizen.entity';
