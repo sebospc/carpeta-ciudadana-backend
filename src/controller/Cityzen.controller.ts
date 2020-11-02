@@ -27,6 +27,9 @@ export default class CitizenController {
         this.router.get('/myDocuments', this.cityzenAuth, this.getMyDocuments);
         this.router.post('/uploadTemporalDocument', this.cityzenAuth, upload.single('file'), this.uploadTemporalDocument);
         this.router.get('/myDocument', this.cityzenAuth, this.getMyDocument);
+        this.router.get('/', (req, res) => {
+            res.send("Cityzen test");
+        })
     }
 
     public async login(req: express.Request, res: express.Response) {
