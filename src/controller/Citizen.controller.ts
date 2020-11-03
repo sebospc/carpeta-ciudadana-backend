@@ -41,7 +41,7 @@ export default class CitizenController {
             res.send({id_token: jwt});
         } else {
             res.status(401)
-                .send("Invalid login");
+                .send({ error: "Invalid login" });
         }
     }
 
@@ -57,23 +57,21 @@ export default class CitizenController {
         const citizen: Citizen = await citizenService.register(registercitizen);
         if (citizen) {
             res.status(200)
-                .send({
-                    email: citizen.email
-                });
+                .send({email: citizen.email});
 
         } else {
             res.status(403)
-                .send("citizen already exists");
+                .send({ message: "citizen already exists" });
         }
     }
 
     public async getMyDocuments(req: express.Request, res: express.Response) {
         const fileNames: String[] = await citizenService.getMyDocumentsName(req['currentcitizen'])
         if (fileNames) {
-            res.send({fileNames: fileNames});
+            res.send({ fileNames: fileNames });
         } else {
             res.status(403)
-                .send({error:"files not found"});
+                .send({ error: "files not found" });
         }
     }
 
@@ -90,10 +88,10 @@ export default class CitizenController {
         }
 
         if (result[0]) {
-            res.send(result[1]);
+            res.send({ message: result[1] });
         } else {
             res.status(403)
-                .send(result[1]);
+                .send({ error: result[1] });
         }
     }
 
@@ -123,7 +121,7 @@ export default class CitizenController {
             res.send(file);
         } else {
             res.status(403)
-                .send('File not found');
+                .send({ error: 'File not found' });
         }
     }
 }

@@ -25,10 +25,10 @@ export default class OrganizationController {
     public async login(req: express.Request, res: express.Response) {
         const token: String = await organizationService.loginOrganization(req.body.identifier, req.body.secretKey);
         if(token){
-            res.send(token);
+            res.send({ id_token: token });
         }else{
             res.status(401)
-            .send("Organization not found");
+                .send({ error: "Organization not found" });
         }
     }
 
@@ -39,12 +39,10 @@ export default class OrganizationController {
         const secretKey = await organizationService.registerOrganization(registerOrganization);
 
         if (secretKey) {
-            res.send({
-                secretKey: secretKey
-            });
+            res.send({ secretKey: secretKey });
         } else {
             res.status(403)
-                .send('Organization already exists');
+                .send({ error: 'Organization already exists' });
         }
     }
 
@@ -61,10 +59,10 @@ export default class OrganizationController {
         }
 
         if (result[0]) {
-            res.send(result[1]);
+            res.send({ message: result[1] });
         } else {
             res.status(403)
-                .send(result[1]);
+                .send({ message: result[1] });
         }
     }
     public async entityAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -78,11 +76,11 @@ export default class OrganizationController {
                 }
             } catch (err) {
                 res.status(401)
-                    .send("unauthorized, token expired");
+                    .send({ error: "unauthorized, token expired" });
             }
         } else {
             res.status(401)
-                .send("unauthorized, token can't be null");
+                .send({ error: "unauthorized, token can't be null" });
         }
     }
 }
