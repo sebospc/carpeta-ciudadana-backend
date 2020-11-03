@@ -1,4 +1,4 @@
-var env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV || 'staging';
 console.log('current env: ' + env)
 var config = {
   development: {

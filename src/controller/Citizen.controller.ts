@@ -38,7 +38,7 @@ export default class CitizenController {
 
         const jwt: String = await citizenService.login(logincitizen);
         if (jwt) {
-            res.send(jwt);
+            res.send({id_token: jwt});
         } else {
             res.status(401)
                 .send("Invalid login");
@@ -70,10 +70,10 @@ export default class CitizenController {
     public async getMyDocuments(req: express.Request, res: express.Response) {
         const fileNames: String[] = await citizenService.getMyDocumentsName(req['currentcitizen'])
         if (fileNames) {
-            res.send(fileNames);
+            res.send({fileNames: fileNames});
         } else {
             res.status(403)
-                .send("files not found");
+                .send({error:"files not found"});
         }
     }
 
@@ -109,11 +109,11 @@ export default class CitizenController {
                 }
             } catch (err) {
                 res.status(401)
-                    .send("unauthorized, token expired");
+                    .send({error: "unauthorized, token expired"});
             }
         } else {
             res.status(401)
-                .send("unauthorized, token can't be null");
+                .send({error: "unauthorized, token can't be null"});
         }
     }
 
