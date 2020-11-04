@@ -1,9 +1,9 @@
-import { Citizen, DocumentContainer, Document } from "../models/core";
+import { Citizen, DocumentContainer, Document } from '../models/core';
 import { readFileSync } from 'fs';
-import { getManager } from "typeorm";
+import { getManager } from 'typeorm';
 import * as documentDao from '../dao/DocumentDao.dao';
 
-export const saveTemporalDocument = async (fileInfo: JSON, citizen: Citizen): Promise<[DocumentContainer | undefined, String] | undefined> => {
+export const saveDocument = async (fileInfo: JSON, citizen: Citizen): Promise<[DocumentContainer | undefined, String] | undefined> => {
     const documentContainerRepository = getManager().getRepository(DocumentContainer);
     const currentDocuments: DocumentContainer[] = await documentContainerRepository.find({
         citizen: citizen
@@ -12,7 +12,7 @@ export const saveTemporalDocument = async (fileInfo: JSON, citizen: Citizen): Pr
 
         const document: Document = new Document();
 
-        document.file = ("\\x" + readFileSync(fileInfo['path']).toString('hex')) as any;
+        document.file = ('\\x' + readFileSync(fileInfo['path']).toString('hex')) as any;
         const documentRepository = getManager().getRepository(Document);
         await documentRepository.save(document);
 
@@ -23,9 +23,9 @@ export const saveTemporalDocument = async (fileInfo: JSON, citizen: Citizen): Pr
         documentContainer.mimeType = fileInfo['mimetype'];
         documentContainer.citizen = citizen;
         documentContainer.document = document;
-        return [await documentContainerRepository.save(documentContainer), "Document saved"];
+        return [await documentContainerRepository.save(documentContainer), 'Document saved'];
     } else {
-        return [undefined, "Document already exists"];
+        return [undefined, 'Document already exists'];
     }
 
 }
@@ -44,6 +44,13 @@ export const getDocumentByContainerID = async (containerID: string): Promise<Doc
         relations: ['document']
     });
     return documentContainerRelationed.document;
+}
+
+export const authenticateDocument = async (document: DocumentContainer): Promise<[DocumentContainer | undefined, String] | undefined> => {
+    const documentContainerRepository = getManager().getRepository(DocumentContainer);
+    document.authenticated = true;
+
+    return [await documentContainerRepository.save(document), 'saved and authorized'];
 }
 
 

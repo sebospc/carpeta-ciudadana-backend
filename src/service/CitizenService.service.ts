@@ -1,9 +1,9 @@
-import { RegisterCitizen } from "../payload/RegisterCitizen.request";
+import { RegisterCitizen } from '../payload/RegisterCitizen.request';
 import bcrypt from 'bcrypt';
-import { Citizen, DocumentContainer, Document } from "../models/core";
-import { getManager } from "typeorm";
-import { LoginCitizen } from "../payload/LoginCitizen.request";
-import { TokenPayload } from "../payload/TokenPayload.token";
+import { Citizen, DocumentContainer, Document } from '../models/core';
+import { getManager } from 'typeorm';
+import { LoginCitizen } from '../payload/LoginCitizen.request';
+import { TokenPayload } from '../payload/TokenPayload.token';
 
 import * as minticService from './MinticService.service';
 import * as citizenDao from '../dao/CitizenDao.dao';
@@ -20,7 +20,7 @@ export const register = async (registerUser: RegisterCitizen): Promise<Citizen |
         citizen.identifier = registerUser.identifier;
         citizen.firstName = registerUser.firstName;
         citizen.lastName = registerUser.lastName;
-        citizen.email = Array.from({ length: 10 }, () => Math.random().toString(36)[2]).join('') + "@carpeta-ciudadana.com";
+        citizen.email = Array.from({ length: 10 }, () => Math.random().toString(36)[2]).join('') + '@carpeta-ciudadana.com';
         citizen.password = await bcrypt.hash(registerUser.password, 7);
         citizen.address = registerUser.address;
 
@@ -52,9 +52,9 @@ export const saveTemporalDocument = async (fileInfo: JSON, currentcitizen: Token
     const citizen: Citizen = await citizenDao.findByEmail(currentcitizen.email);
 
     if (fileInfo && citizen) {
-        return await documentService.saveTemporalDocument(fileInfo, citizen);
+        return await documentService.saveDocument(fileInfo, citizen);
     } else {
-        return [undefined, "Incomplete information"];
+        return [undefined, 'Incomplete information'];
     }
 }
 

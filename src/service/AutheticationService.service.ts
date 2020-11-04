@@ -1,8 +1,8 @@
-import { Citizen } from "../models/core";
+import { Citizen } from '../models/core';
 import jwt from 'jsonwebtoken';
 import * as config from '../../config';
-import { TokenPayload } from "../payload/TokenPayload.token";
-import { Organization } from "src/models/core/Organization.entity";
+import { TokenPayload } from '../payload/TokenPayload.token';
+import { Organization } from 'src/models/core/Organization.entity';
 
 export const authenticatecitizen = async (citizen: Citizen): Promise<string> => {
     const payload: TokenPayload = {
@@ -11,7 +11,7 @@ export const authenticatecitizen = async (citizen: Citizen): Promise<string> => 
     };
 
     return jwt.sign(payload, config.jwt_secret_token, {
-        expiresIn: "1h"
+        expiresIn: '1h'
     });
 }
 
@@ -24,6 +24,6 @@ export const authenticateOrganization = async (organization: Organization): Prom
         identifier: organization.identifier
     }
     return jwt.sign(payload, config.jwt_secret_token, {
-        expiresIn: "1h"
+        expiresIn: '1h'
     });
 }

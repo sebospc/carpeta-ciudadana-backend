@@ -1,6 +1,6 @@
-import { Citizen, DocumentContainer } from "../models/core";
+import { Citizen, DocumentContainer } from '../models/core';
 import axios from 'axios';
-import * as config from "../../config";
+import * as config from '../../config';
 
 export const citizenAlreadyRegistered = async (identifier: string): Promise<boolean> => {
 
@@ -23,7 +23,7 @@ export const notifyCitizenSaved = async (citizen: Citizen): Promise<boolean> => 
         address: citizen.address ?? Array.from({ length: 10 }, () => Math.random().toString(36)[2]).join(''),
         email: citizen.email,
         operatorId: 2,
-        operatorName: "Carpeta Ciudadana"
+        operatorName: 'Carpeta Ciudadana'
     }
 
     try {

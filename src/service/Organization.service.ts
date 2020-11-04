@@ -1,7 +1,7 @@
-import { Organization } from "../models/core/Organization.entity";
-import { RegisterOrganization } from "../payload/RegisterOrganization.request";
-import { Citizen, DocumentContainer } from "../models/core";
-import { getRepository } from "typeorm";
+import { Organization } from '../models/core/Organization.entity';
+import { RegisterOrganization } from '../payload/RegisterOrganization.request';
+import { Citizen, DocumentContainer } from '../models/core';
+import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
 
 import * as authenticationService from './AutheticationService.service';
@@ -47,10 +47,10 @@ export const loginOrganization = async (identifier: string, secretKey: string): 
 export const saveVerifiedDocumentToCitizen = async (fileInfo: JSON, citizenEmail: string): Promise<[DocumentContainer | undefined, String] | undefined> => {
     const citizen: Citizen = await citizenDao.findByEmail(citizenEmail);
     if (fileInfo && citizen) {
-        const documentResult = await documentService.saveTemporalDocument(fileInfo, citizen);
+        const documentResult = await documentService.saveDocument(fileInfo, citizen);
         if (documentResult[0]) {
             if (await minticService.validateDocument(citizen.identifier, documentResult[0])) {
-                return [documentResult[0], 'Document saved and authenticated'];
+                return await documentService.authenticateDocument(documentResult[0]);
             } else {
                 return documentResult;
             }
@@ -58,6 +58,6 @@ export const saveVerifiedDocumentToCitizen = async (fileInfo: JSON, citizenEmail
             return documentResult;
         }
     } else {
-        return [undefined, "Incomplete information"];
+        return [undefined, 'Incomplete information'];
     }
 }

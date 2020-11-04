@@ -1,4 +1,4 @@
-import { Item } from "../base";
+import { Item } from '../base';
 import { Column, Entity } from 'typeorm';
 
 @Entity()

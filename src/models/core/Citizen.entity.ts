@@ -71,6 +71,12 @@ export class DocumentContainer extends Media {
     })
     mimeType: string;
 
+    @Column({
+        nullable: false,
+        default: false
+    })
+    authenticated: boolean;
+
     @ManyToOne(type => Citizen, textileReference => textileReference.documentContainers)
     citizen: Citizen;
 
